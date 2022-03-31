@@ -203,12 +203,12 @@ export default {
 //     background: #161d31!important;
 // }
 .container {
-  width: 79.8%;
+  width: 80%;
   transition: width .2s;
   right: 0;
   background: #f8f8f8;
   position: absolute;
-  padding: 100px 50px 0px;
+  padding: 110px 29px 0px 35px;
   box-sizing: border-box;
 }
 header {
@@ -254,8 +254,8 @@ header {
     }
   }
   .left {
-    width: 35px;
-    height: 35px;
+    width: 38px;
+    height: 38px;
     background: #7367f0;
     border-radius: 5px;
     display: flex;

@@ -1,7 +1,7 @@
 <template>
   <nav :class="{ darkNav: darkTheme }">
     <div class="left">
-      <a v-show="screen < 1200" @click="$emit('toggleSideBar')">
+      <a v-show="false" @click="$emit('toggleSideBar')">
         <svg xmlns="http://www.w3.org/2000/svg" width="21px" height="21px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
       </a>
       <a
@@ -119,21 +119,7 @@
         <p>admin</p>
       </div>
       <div class="icon alert noti">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="21px"
-          height="21px"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="text-body feather feather-bell"
-        >
-          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="21px" height="21px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-body feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
       </div>
       <div class="icon alert cart">
         <svg
@@ -228,7 +214,7 @@
 <script>
 export default {
   props: ["darkTheme"],
-  inject:["screen"],
+  inject:["screen"]
 };
 </script>
 
@@ -253,14 +239,15 @@ nav {
   transition: width .2s;
   box-sizing: border-box;
   position: fixed;
-  width: 74.1%;
-  height: 62px;
+  width: 75%;
+  height: 63px;
   border-radius: 0.4rem;
-  right: 45px;
+  right: 28px;
   top: 18px;
   display: flex;
   justify-content: space-between;
   padding: 10px 22px;
+  padding-left:21px;
   box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
   background: white;
   .feather-star {
@@ -295,7 +282,7 @@ nav {
         height: 9px;
         border-radius: 50%;
         right: 21px;
-        bottom: 11px;
+        bottom: 12px;
         background: #28c76f;
         border: 1px solid white;
       }
@@ -318,7 +305,7 @@ nav {
       }
     }
     .icon {
-      margin-right: 10px;
+      margin-right:7px;
       margin-top: 10px;
       position: relative;
       width: 30px;
@@ -357,13 +344,13 @@ nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 80px;
+      width: 82px;
       height: 100%;
       overflow: hidden;
       margin-right: 10px;
       img {
-        width: 20px;
-        height: 13px;
+        width: 22px;
+        height: 14px;
       }
       p {
         margin: 0;

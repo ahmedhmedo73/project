@@ -6,7 +6,8 @@
           <h1>Vuexy</h1>
       </div>
       <div class="dot">
-          <svg height="20" width="22" v-show="screen >= 1200">
+          <!-- v-show="screen >= 1200" -->
+          <svg height="20" width="22" >
                <circle cx="8" cy="10" r="7"  stroke-width="2"  stroke="#7367f0" fill="transparent"/>
                <circle cx="8" cy="10" r="3"  stroke-width="2"  stroke="#7367f0" fill="transparent"/>
           </svg>
@@ -242,9 +243,9 @@ export default {
 }
 aside{
     transition: width .2s;
-    background: #f8f8f8;
+    background: #ffffff;
     position: fixed;
-    width: 18.1%;
+    width: 230px;
     height: 100%;
     left:0;
     padding:24px 15px 0px 15px;
