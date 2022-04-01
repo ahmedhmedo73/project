@@ -42,9 +42,14 @@
       </div>
     </header>
     <div class="top">
-      <p>Filters</p>
-      <div class="out">
-        <p><span>{{products.length}}</span> results found</p>
+      <p v-show="screen > 992">Filters</p>
+      <a v-show="screen < 1200" @click="$emit('toggleFilters')">
+        <svg xmlns="http://www.w3.org/2000/svg" style="margin-right:10px;" width="21px" height="45px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </a>
+      <div class="out" :style="{ width: screen > 992 ? '70%' : '100%' }">
+        <p>
+          <span>{{ products.length }}</span> results found
+        </p>
         <div class="in">
           <div class="featured">
             <p>Featured</p>
@@ -134,8 +139,8 @@
       </div>
     </div>
     <div class="main">
-      <filters @range="range" @changeBrand="changeBrand" :ratings ="rating"/>
-      <products :main ="products" @search="search"/>
+      <filters @range="range" @changeBrand="changeBrand" :ratings="rating" :screen="screen" :showFilters = "showFilters"/>
+      <products :main="products" @search="search" />
     </div>
   </div>
 </template>
@@ -146,55 +151,65 @@ import products from "./products.vue";
 
 export default {
   components: {
-    Filters,products
+    Filters,
+    products,
   },
-  props:["darkTheme"],
-  data(){
-    return{
-        data:[],
-        word:"",
-        min:0,
-        max:30000,
-        brand:"all",
-        num:[]
-    }
+  props: ["darkTheme", "screen" ,"showFilters"],
+  data() {
+    return {
+      data: [],
+      word: "",
+      min: 0,
+      max: 30000,
+      brand: "all",
+      num: []
+    };
   },
-  mounted(){
-    fetch('http://localhost:3000/products')
-       .then(res => res.json())
-       .then(data => this.data = data)
-       .catch(err => console.log(err.message))
+  mounted() {
+    fetch("http://localhost:3000/products")
+      .then((res) => res.json())
+      .then((data) => (this.data = data))
+      .catch((err) => console.log(err.message));
   },
-  computed:{
+  computed: {
     products() {
-      return this.data.slice()
-      .filter(product => product.name.toLowerCase().includes(this.word))
-      .filter(product => product.price >= this.min && product.price <= this.max)
-      .filter(product => this.brand == "all" || product.brand == this.brand);
+      return this.data
+        .slice()
+        .filter((product) => product.name.toLowerCase().includes(this.word))
+        .filter(
+          (product) => product.price >= this.min && product.price <= this.max
+        )
+        .filter(
+          (product) => this.brand == "all" || product.brand == this.brand
+        );
     },
-    rating(){
-      for(var i=3;i>=0;i--){
-        this.num[i] = this.products.filter(product => product.rating == i+1).length;
+    rating() {
+      for (var i = 3; i >= 0; i--) {
+        this.num[i] = this.products.filter(
+          (product) => product.rating == i + 1
+        ).length;
       }
-      this.num[3] += this.products.filter(product => product.rating == 5).length;
-      for(var i=2;i>=0;i--){
-        this.num[i] += this.num[i+1];
+      this.num[3] += this.products.filter(
+        (product) => product.rating == 5
+      ).length;
+      for (var i = 2; i >= 0; i--) {
+        this.num[i] += this.num[i + 1];
       }
       return this.num.reverse();
-    }
-  }
-  ,methods:{
-    search(e){
+    },
+  },
+  methods: {
+    search(e) {
       this.word = e;
     },
-    range(min,max){
+    range(min, max) {
       this.min = min;
       this.max = max;
     },
-    changeBrand(brand){
+    changeBrand(brand) {
       this.brand = brand;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -204,7 +219,7 @@ export default {
 // }
 .container {
   width: 80%;
-  transition: width .2s;
+  transition: width 0.2s;
   right: 0;
   background: #f8f8f8;
   position: absolute;
@@ -272,8 +287,7 @@ header {
   }
 }
 .top,
-.out,
-.in {
+.out {
   display: flex;
   justify-content: space-between;
   p {
@@ -284,8 +298,11 @@ header {
   }
   .in {
     width: 35%;
+    display: flex;
+    justify-content: end;
   }
   .featured {
+    margin-right: 20px;
     width: 130px;
     height: 35px;
     border: 1px solid #7367f0;
@@ -295,10 +312,10 @@ header {
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
-    cursor:pointer;
-    transition: background-color .5s;
+    cursor: pointer;
+    transition: background-color 0.5s;
     &:hover {
-        background: rgba(235, 233, 233, 0.801);
+      background: rgba(235, 233, 233, 0.801);
     }
     p {
       margin: 0;
@@ -337,19 +354,19 @@ header {
     }
   }
 }
-.box{
+.box {
   box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
   border-radius: 7px;
-  padding:20px;
+  padding: 20px;
 }
-.main{
+.main {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
 
-@media screen and (max-width:1200px){
-  .container{
+@media screen and (max-width: 1200px) {
+  .container {
     width: 100%;
   }
 }

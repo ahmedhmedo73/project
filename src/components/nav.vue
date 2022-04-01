@@ -1,10 +1,11 @@
 <template>
   <nav :class="{ darkNav: darkTheme }">
     <div class="left">
-      <a v-show="false" @click="$emit('toggleSideBar')">
+      <a v-show="screen < 1200" @click="$emit('toggleSideBar')">
         <svg xmlns="http://www.w3.org/2000/svg" width="21px" height="21px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
       </a>
-      <a
+      <div v-show="screen > 992">
+        <a
         ><svg
           data-v-1134b199=""
           xmlns="http://www.w3.org/2000/svg"
@@ -109,6 +110,7 @@
           ></polygon>
         </svg>
       </a>
+      </div>
     </div>
     <div class="right">
       <div class="image">
@@ -213,8 +215,7 @@
 
 <script>
 export default {
-  props: ["darkTheme"],
-  inject:["screen"]
+  props: ["darkTheme","screen"],
 };
 </script>
 
@@ -242,7 +243,7 @@ nav {
   width: 75%;
   height: 63px;
   border-radius: 0.4rem;
-  right: 28px;
+  right: 30px;
   top: 18px;
   display: flex;
   justify-content: space-between;
@@ -257,10 +258,20 @@ nav {
     height: 100%;
     width: 60%;
     padding-top: 11px;
+    display: flex;
+    div{
+      margin-left:10px;
+    }
     a {
       width: 10px;
       height: 10px;
       margin-right: 14px;
+      svg{
+        stroke:#777483;
+      }
+    }
+    .feather-star{
+      stroke:orange;
     }
   }
   .right {
@@ -361,7 +372,7 @@ nav {
 }
 @media screen and (max-width:1200px){
   nav{
-    width: 92%;
+    width: 93.3%;
   }
 }
 </style>

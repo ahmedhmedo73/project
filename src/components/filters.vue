@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box" :class="{responsive : (screen < 992) }" :style="{'left': showFilters ? '0' : '-260px'}">
     <div>
       <h4>Multi Range</h4>
       <div class="prices" @change="range">
@@ -51,7 +51,7 @@
 
 <script>
 export default {
-  props:['ratings']
+  props:['ratings','screen','showFilters']
   ,data() {
     return {
         rating:[4,3,2,1],
@@ -141,5 +141,15 @@ export default {
         stroke:rgba(0, 0, 0, 0.329);
     }
   }
+}
+.responsive{
+   position: absolute;
+   top:0;
+   bottom:0;
+   left:-230px;
+   z-index:10;
+   overflow-y: scroll;
+   transition: left .4s;
+   width: 222px;
 }
 </style>

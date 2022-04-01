@@ -1,11 +1,27 @@
 <template>
-  <ecommerce :darkTheme="darkTheme" />
-  <nav-bar
+  <div class="overlay" 
+  :class="{show : showSideBar || showFilters, showF : showFilters}" @click.self="showSideBar = false ; showFilters = false;">
+  </div>
+  <ecommerce
     :darkTheme="darkTheme"
+    :showSideBar="showSideBar"
+    :screen="screen"
+    :showFilters = "showFilters"
+    @toggleFilters="toggleFilters"
+  />
+  <navBar
+    :darkTheme="darkTheme"
+    :showSideBar="showSideBar"
+    :screen="screen"
     @changeTheme="changeTheme"
     @toggleSideBar="toggleSideBar"
   />
-  <side-bar :darkTheme="darkTheme" />
+  <side-bar
+    :darkTheme="darkTheme"
+    :showSideBar="showSideBar"
+    :screen="screen"
+    @toggleSideBar="toggleSideBar"
+  />
 </template>
 
 <script>
@@ -18,11 +34,13 @@ export default {
   data() {
     return {
       darkTheme: false,
-      show:false
+      showSideBar: false,
+      screen: window.innerWidth,
+      showFilters:false
     };
   },
   created() {
-    window.addEventListener('resize', this.changeScreen);
+    window.addEventListener("resize", this.changeScreen);
   },
   components: {
     sideBar,
@@ -35,18 +53,14 @@ export default {
     },
     toggleSideBar() {
       this.showSideBar = !this.showSideBar;
-      console.log("work");
     },
-    changeScreen(){
+    toggleFilters() {
+      this.showFilters = !this.showFilters;
+    },
+    changeScreen() {
       this.screen = window.innerWidth;
-    }
-  }
-  ,provide(){
-    return {
-      screen: 0,
-      showSideBar: true
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -55,5 +69,21 @@ body {
   margin: 0;
   font-family: Montserrat, Helvetica, Arial, sans-serif;
   box-sizing: border-box;
+}
+.overlay{
+  position: fixed;
+  width: 100%;
+  height:100%;
+  background:rgba(0,0,0,0);
+  transition: all .4s;
+  z-index:10;
+  visibility: hidden;
+}
+.show{
+  visibility:visible;
+  background:rgba(34,41,47,.5);
+}
+.showF{
+  background: rgba(34,41,47,.2);
 }
 </style>

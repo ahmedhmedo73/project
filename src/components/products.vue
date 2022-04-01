@@ -22,12 +22,14 @@
               <a class="des down">
                 {{product.discription}}
               </a>
+              <div class="btn">
               <a class="wish">
                 <svg data-v-15eba8c6="" xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-50 feather feather-heart"><path data-v-15eba8c6="" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                 Wishlist</a>
               <a class="viewIn">
                 <svg data-v-15eba8c6="" xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-50 feather feather-shopping-cart"><circle data-v-15eba8c6="" cx="9" cy="21" r="1"></circle><circle data-v-15eba8c6="" cx="20" cy="21" r="1"></circle><path data-v-15eba8c6="" d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                 View in Cart</a>
+              </div>
           </div>
       </div>
       <div class="page">
@@ -116,9 +118,9 @@ export default {
     column-gap: 3%;
     row-gap: 20px;
     margin-top:20px;
-    height: fit-content;
     .card{
         box-shadow:0 4px 24px 0 rgb(34 41 47 / 10%);
+        height: fit-content;
         display: flex;
         flex-wrap:wrap;
         background: white;
@@ -145,14 +147,14 @@ export default {
                 fill:white;
             }
             .rating{
-                width: 55%;
+                width: 100px;
                 display: grid;
                 grid-template-columns: repeat(5,1fr);
                 justify-content: space-between;
                 column-gap: 2px;
             }
             .price{
-                width: 50%;
+                width: 80%;
                 p{
                     margin:0;
                     text-align: end;
@@ -160,7 +162,7 @@ export default {
             }
         }
         .des{
-            width: 170px;
+            width: 100%;
             height: 18px;
             margin:5px 20px;
             white-space: nowrap;
@@ -184,6 +186,11 @@ export default {
             svg{
                 margin-right: 5px;
             }
+        }
+        .btn{
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
         }
         .wish{
             background: #f6f6f6;
@@ -247,5 +254,25 @@ export default {
             color:white;
         }
     }
+}
+
+@media screen and (max-width: 992px) {
+  .product {
+    grid-template-columns: repeat(2,48.5%);
+  }
+  .products{
+    width: 100%;
+  }
+  .wish,.viewIn{
+    width: 50%!important;
+  }
+  .btn{
+    flex-wrap:initial!important;
+  }
+}
+@media screen and (max-width: 576px) {
+  .product {
+    grid-template-columns: repeat(1,98%);
+  }
 }
 </style>

@@ -1,16 +1,19 @@
 <template>
-  <aside :class="{ darkSide: darkTheme }" :style="{'left': showSideBar? '0%' : '-20%'}">
+  <aside :class="{ darkSide: darkTheme }" :style="{'left': (screen > 1200 || showSideBar )? '0' : '-260px'}">
     <header>
       <div class="logo">
           <img src="https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/demo-1/img/logo.36f34a9f.svg" alt="">
           <h1>Vuexy</h1>
       </div>
-      <div class="dot">
+      <div v-show="screen > 1200" class="dot">
           <!-- v-show="screen >= 1200" -->
           <svg height="20" width="22" >
                <circle cx="8" cy="10" r="7"  stroke-width="2"  stroke="#7367f0" fill="transparent"/>
                <circle cx="8" cy="10" r="3"  stroke-width="2"  stroke="#7367f0" fill="transparent"/>
           </svg>
+      </div>
+      <div v-show="screen <= 1200" class="close" @click="$emit('toggleSideBar')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" stroke="#7367f0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="d-block d-xl-none feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </div>
     </header>
     <main>
@@ -47,7 +50,7 @@
 
 <script>
 export default {
-    props:['darkTheme']
+    props:['darkTheme','showSideBar',"screen"]
     ,data(){
         return {
             lists : [
@@ -226,8 +229,6 @@ export default {
            this.flag = !this.flag;
         }
      },
-     inject:['showSideBar',"screen"],
-     
 }
 </script>
 
