@@ -43,7 +43,7 @@
     </header>
     <div class="top">
       <p class="dark-p" v-show="screen > 992">Filters</p>
-      <a v-show="screen < 1200" @click="$emit('toggleFilters')">
+      <a v-show="screen < 992" @click="$emit('toggleFilters')">
         <svg xmlns="http://www.w3.org/2000/svg" style="margin-right:10px;" width="21px" height="45px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
       </a>
       <div class="out" :style="{ width: screen > 992 ? '70%' : '100%' }">
@@ -51,8 +51,8 @@
           <span>{{ products.length }}</span> results found
         </p>
         <div class="in">
-          <div class="featured">
-            <p class="purple">Featured</p>
+          <div class="featured" @click="showList = !showList">
+            <p class="purple">{{feature}}</p>
             <img src="./../assets/list.svg" alt="" />
           </div>
           <div class="view">
@@ -136,6 +136,11 @@
             </div>
           </div>
         </div>
+        <div class="feature-list" v-show="showList">
+            <div class="item" @click="toggleList" id="Featured">Featured</div>
+            <div class="item" @click="toggleList" id="Lowest">Lowest</div>
+            <div class="item" @click="toggleList" id="Highest">Highest</div>
+        </div>
       </div>
     </div>
     <div class="main">
@@ -157,32 +162,19 @@ export default {
   props: ["darkTheme", "screen" ,"showFilters"],
   data() {
     return {
-      data: [],
-      word: "",
-      min: 0,
-      max: 30000,
-      brand: "all",
-      num: []
+      data: [],num: [],showList:false,feature:"Featured",
+      copy:[],products:[]
     };
   },
   mounted() {
     fetch("http://localhost:3000/products")
       .then((res) => res.json())
       .then((data) => (this.data = data))
+      .then(()=> (this.products = this.data.slice()))
+      .then(()=> (this.copy = this.data.slice()))
       .catch((err) => console.log(err.message));
   },
   computed: {
-    products() {
-      return this.data
-        .slice()
-        .filter((product) => product.name.toLowerCase().includes(this.word))
-        .filter(
-          (product) => product.price >= this.min && product.price <= this.max
-        )
-        .filter(
-          (product) => this.brand == "all" || product.brand == this.brand
-        );
-    },
     rating() {
       for (var i = 3; i >= 0; i--) {
         this.num[i] = this.products.filter(
@@ -200,15 +192,38 @@ export default {
   },
   methods: {
     search(e) {
-      this.word = e;
+      this.products = this.data.slice().filter((product) => product.name.toLowerCase().includes(e));
+      this.copy = [...this.products];
+      this.feature = "Featured";
     },
     range(min, max) {
-      this.min = min;
-      this.max = max;
+      this.products = this.data.slice().filter((product) => product.price >= min && product.price <= max);
+      this.copy = [...this.products];
+      this.feature = "Featured";
     },
     changeBrand(brand) {
-      this.brand = brand;
+      this.products = this.data.slice().filter((product) => brand == "all" || product.brand == brand);
+      this.copy = [...this.products];
+      this.feature = "Featured";
     },
+    toggleList($e){
+      this.showList = !this.showList;
+      this.feature = $e.target.id;
+      this.sort(this.feature);
+    },
+    sort(kind){
+      switch (kind) {
+        case "Featured":
+          this.products = [...this.copy];
+        break;
+        case "Lowest":
+          this.products.sort((a,b) => (a.price > b.price) ? 1 : ((b.price > a.price) ? -1 : 0));
+          break;
+        case "Highest":
+          this.products.sort((a,b) => (a.price < b.price) ? 1 : ((b.price < a.price) ? -1 : 0));
+          break;
+      }
+    }
   },
 };
 </script>
@@ -315,6 +330,34 @@ header {
   }
   .out {
     width: 70%;
+    position:relative;
+    .feature-list{
+      position: absolute;
+      top:45px;
+      right:102px;
+      z-index: 5;
+      width: 140px;
+      height: 130px;
+      background: #fff;
+      display: flex;
+      flex-wrap: wrap;
+      padding-bottom:0;
+      box-sizing: border-box;
+      box-shadow: 0 5px 25px rgb(34 41 47 / 10%);
+      border-radius: 0.358rem;
+      .item{
+        width: 100%;
+        color: #6e6b7bce;
+        padding: 10px 20px;
+        padding-top:15px;
+        font-size: 14px;
+        cursor:pointer;
+        &:hover{
+          background-color: rgba(115,103,240,.12);
+          color: #7367f0;
+        }
+      }
+    }
   }
   .in {
     width: 35%;
@@ -344,6 +387,7 @@ header {
       width: 20px;
       transform: rotate(90deg);
     }
+    
   }
   .view {
     width: 80px;

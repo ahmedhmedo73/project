@@ -16,6 +16,10 @@
       </div>
     </div>
     <div>
+    <h4>Price Range</h4>
+    <slider :min="3" :max="3"/>
+    </div>
+    <div>
       <h4>Categories</h4>
       <div class="prices cat" @change="changeCat">
         <div v-for="cat in cat" :key="cat">
@@ -50,6 +54,8 @@
 </template>
 
 <script>
+import slider from './../components/slider.vue';
+
 export default {
   props:['ratings','screen','showFilters','darkTheme']
   ,data() {
@@ -68,12 +74,13 @@ export default {
       );
     },
     changeCat($e){
-       console.log($e.target.id);
+      //  console.log($e.target.id);
     },
     changeBrand($e){
        this.$emit('changeBrand',$e.target.id);
     },
   },
+  components:{slider}
 };
 </script>
 

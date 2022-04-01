@@ -44,9 +44,11 @@
          </button>
       </div>
   </div>
+  
 </template>
 
 <script>
+
 export default {
   props:['main',"darkTheme"],
   data(){
@@ -71,7 +73,7 @@ export default {
         console.log(this.main.length);
     },
     changePage(inc){
-        this.curr += inc;
+        inc == 1 ? this.curr++ : this.curr--;
     }
   }
 }

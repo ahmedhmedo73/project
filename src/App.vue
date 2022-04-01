@@ -59,7 +59,7 @@ export default {
     },
     changeScreen() {
       this.screen = window.innerWidth;
-    },
+    }
   },
 };
 </script>
