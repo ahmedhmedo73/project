@@ -1,5 +1,5 @@
 <template>
-  <div class="products">
+  <div class="products" :class="{ darkProduct: darkTheme }">
       <div class="search">
         <input type="search" placeholder="Search Prodeuct" id="" @keyup= "search">
         <svg data-v-15eba8c6="" xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted feather feather-search"><circle data-v-15eba8c6="" cx="11" cy="11" r="8"></circle><line data-v-15eba8c6="" x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -48,7 +48,7 @@
 
 <script>
 export default {
-  props:['main'],
+  props:['main',"darkTheme"],
   data(){
       return{
           curr:1
@@ -78,6 +78,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.darkProduct{
+    .search,input[type="search"],.card{
+        background: #283046!important;
+    }
+    .wish{
+        color: white !important;
+        background: #161d31 !important;
+        svg{
+            stroke: white !important;
+        }
+    }
+    .white{
+        fill:transparent !important;
+        stroke:rgba(255, 255, 255, 0.39)!important;
+    }
+    .price,.des{
+        color: rgba(255, 255, 255, 0.651) !important;
+    }
+    button,.nums{
+        background: #242b3d !important;
+        color:#a1b3b1 !important;
+    }
+
+    .active-num{
+        background: #7367f0 !important;
+        color: white !important;
+    }
+}
 .products{
     display: flex;
     flex-wrap: wrap;

@@ -38,7 +38,7 @@
                         <svg height="20" width="12">
                             <circle cx="8" cy="13" r="3"  stroke-width="1"  stroke="#7367f0" fill="transparent"/>
                         </svg>
-                        <h3>{{miniList}}</h3>
+                        <h3 class="list-name">{{miniList}}</h3>
                     </li>
                 </ul>
             </li>
@@ -241,6 +241,7 @@ export default {
     .list-name{
         color: #d0d2d6!important;
     }
+
 }
 aside{
     transition: width .2s;

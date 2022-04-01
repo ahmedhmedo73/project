@@ -2,7 +2,7 @@
   <div class="container" :class="{ darkCommerce: darkTheme }">
     <header>
       <div class="right">
-        <h2 class="page">Shop</h2>
+        <h2 class="page dark-h2">Shop</h2>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16px"
@@ -19,7 +19,7 @@
           <polyline points="9 22 9 12 15 12 15 22"></polyline>
         </svg>
         <h5>ECommerce</h5>
-        <h5>Shop</h5>
+        <h5 class="dark-h5">Shop</h5>
       </div>
       <div class="left">
         <svg
@@ -42,17 +42,17 @@
       </div>
     </header>
     <div class="top">
-      <p v-show="screen > 992">Filters</p>
+      <p class="dark-p" v-show="screen > 992">Filters</p>
       <a v-show="screen < 1200" @click="$emit('toggleFilters')">
         <svg xmlns="http://www.w3.org/2000/svg" style="margin-right:10px;" width="21px" height="45px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
       </a>
       <div class="out" :style="{ width: screen > 992 ? '70%' : '100%' }">
-        <p>
+        <p class="dark-p">
           <span>{{ products.length }}</span> results found
         </p>
         <div class="in">
           <div class="featured">
-            <p>Featured</p>
+            <p class="purple">Featured</p>
             <img src="./../assets/list.svg" alt="" />
           </div>
           <div class="view">
@@ -139,8 +139,8 @@
       </div>
     </div>
     <div class="main">
-      <filters @range="range" @changeBrand="changeBrand" :ratings="rating" :screen="screen" :showFilters = "showFilters"/>
-      <products :main="products" @search="search" />
+      <filters @range="range" @changeBrand="changeBrand" :ratings="rating" :darkTheme="darkTheme" :screen="screen" :showFilters = "showFilters"/>
+      <products :main="products" @search="search" :darkTheme="darkTheme"/>
     </div>
   </div>
 </template>
@@ -214,9 +214,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .darkCommerce{
-//     background: #161d31!important;
-// }
+*{
+  transition: all .3s;
+}
+.darkCommerce{
+    background: #161d31!important;
+    .dark-h2{
+      color:#d0d2d6;
+    }
+    .dark-h5{
+      color:#b4b7bd;
+    }
+    .dark-p{
+      color: #d0d2d6 !important;;
+    }
+    .purple{
+      color:#7367f0 !important;
+    }
+    .view{
+      .left,.right{
+        background: transparent!important;;
+      }
+    }
+}
 .container {
   width: 80%;
   transition: width 0.2s;

@@ -1,9 +1,9 @@
 <template>
-  <div class="box" :class="{responsive : (screen < 992) }" :style="{'left': showFilters ? '0' : '-260px'}">
+  <div class="box" :class="{responsive : (screen < 992), darkFilters: darkTheme }" :style="{'left': showFilters ? '0' : '-260px'}">
     <div>
       <h4>Multi Range</h4>
       <div class="prices" @change="range">
-        <input id="0:999999" name="price" type="radio" />
+        <input id="0:999999" name="price" type="radio" checked/>
         <label>All</label><br />
         <input id="0:10" name="price" type="radio" />
         <label>&#60;= $10</label><br />
@@ -51,7 +51,7 @@
 
 <script>
 export default {
-  props:['ratings','screen','showFilters']
+  props:['ratings','screen','showFilters','darkTheme']
   ,data() {
     return {
         rating:[4,3,2,1],
@@ -78,6 +78,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.darkFilters{
+    background: #283046!important;
+    h4,label,p{
+        color:#b4b7bd!important;
+    }
+    span{
+        color: #7367f0!important;
+    }
+    input[type="radio"]::after{
+        background-color:#283046!important;
+        content: "";
+        width: 17px;
+        height: 17px;
+        border-radius: 50%;
+        position: absolute;
+    }
+    input[type="radio"]:checked::after{
+        background-color:#7367f0!important;
+    }
+    .white{
+        fill:transparent!important;
+        stroke:rgba(255, 255, 255, 0.39)!important;
+    }
+}
 .box {
   width: 20%;
   background: white;
@@ -125,6 +149,7 @@ export default {
             span{
                 color: rgba(0, 0, 0, 0.493);
                 margin-left:4px;
+                position: absolute;
             }
         }
     }
