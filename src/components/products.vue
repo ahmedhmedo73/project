@@ -70,7 +70,6 @@ export default {
     },
     search($e){
         this.$emit('search',$e.target.value);
-        console.log(this.main.length);
     },
     changePage(inc){
         inc == 1 ? this.curr++ : this.curr--;

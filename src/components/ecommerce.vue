@@ -153,6 +153,7 @@
 <script>
 import Filters from "./filters.vue";
 import products from "./products.vue";
+import json from "./../assets/store-demo-data.json";
 
 export default {
   components: {
@@ -167,12 +168,14 @@ export default {
     };
   },
   mounted() {
-    fetch("http://localhost:3000/products")
-      .then((res) => res.json())
-      .then((data) => (this.data = data))
-      .then(()=> (this.products = this.data.slice()))
-      .then(()=> (this.copy = this.data.slice()))
-      .catch((err) => console.log(err.message));
+    this.products = json.products.slice();
+    this.copy = json.products.slice();
+    // fetch("http://localhost:3000/products")
+    //   .then((res) => res.json())
+    //   .then((data) => (this.data = data))
+    //   .then(()=> (this.products = this.data.slice()))
+    //   .then(()=> (this.copy = this.data.slice()))
+    //   .catch((err) => console.log(err.message));
   },
   computed: {
     rating() {
@@ -192,17 +195,17 @@ export default {
   },
   methods: {
     search(e) {
-      this.products = this.data.slice().filter((product) => product.name.toLowerCase().includes(e));
+      this.products = json.products.slice().filter((product) => product.name.toLowerCase().includes(e));
       this.copy = [...this.products];
       this.feature = "Featured";
     },
     range(min, max) {
-      this.products = this.data.slice().filter((product) => product.price >= min && product.price <= max);
+      this.products = json.products.slice().filter((product) => product.price >= min && product.price <= max);
       this.copy = [...this.products];
       this.feature = "Featured";
     },
     changeBrand(brand) {
-      this.products = this.data.slice().filter((product) => brand == "all" || product.brand == brand);
+      this.products = json.products.slice().filter((product) => brand == "all" || product.brand == brand);
       this.copy = [...this.products];
       this.feature = "Featured";
     },
