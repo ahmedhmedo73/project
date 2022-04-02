@@ -12,7 +12,6 @@
   <navBar
     :darkTheme="darkTheme"
     :showSideBar="showSideBar"
-    :screen="screen"
     @changeTheme="changeTheme"
     @toggleSideBar="toggleSideBar"
   />
@@ -35,8 +34,8 @@ export default {
     return {
       darkTheme: false,
       showSideBar: false,
-      screen: window.innerWidth,
-      showFilters:false
+      showFilters:false,
+      screen: window.innerWidth
     };
   },
   created() {
