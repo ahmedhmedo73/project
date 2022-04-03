@@ -44,7 +44,23 @@
     <div class="top">
       <p class="dark-p" v-show="screen > 992">Filters</p>
       <a v-show="screen < 992" @click="$emit('toggleFilters')">
-        <svg xmlns="http://www.w3.org/2000/svg" style="margin-right:10px;" width="21px" height="45px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          style="margin-right: 10px"
+          width="21px"
+          height="45px"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="feather feather-menu"
+        >
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
       </a>
       <div class="out" :style="{ width: screen > 992 ? '70%' : '100%' }">
         <p class="dark-p">
@@ -52,7 +68,7 @@
         </p>
         <div class="in">
           <div class="featured" @click="showList = !showList">
-            <p class="purple">{{feature}}</p>
+            <p class="purple">{{ feature }}</p>
             <img src="./../assets/list.svg" alt="" />
           </div>
           <div class="view">
@@ -137,15 +153,22 @@
           </div>
         </div>
         <div class="feature-list" v-show="showList">
-            <div class="item" @click="toggleList" id="Featured">Featured</div>
-            <div class="item" @click="toggleList" id="Lowest">Lowest</div>
-            <div class="item" @click="toggleList" id="Highest">Highest</div>
+          <div class="item" @click="toggleList" id="Featured">Featured</div>
+          <div class="item" @click="toggleList" id="Lowest">Lowest</div>
+          <div class="item" @click="toggleList" id="Highest">Highest</div>
         </div>
       </div>
     </div>
     <div class="main">
-      <filters @range="range" @changeBrand="changeBrand" :ratings="rating" :darkTheme="darkTheme" :screen="screen" :showFilters = "showFilters"/>
-      <products :main="products" @search="search" :darkTheme="darkTheme"/>
+      <filters
+        @range="range"
+        @changeBrand="changeBrand"
+        :ratings="rating"
+        :darkTheme="darkTheme"
+        :screen="screen"
+        :showFilters="showFilters"
+      />
+      <products :main="products" @search="search" :darkTheme="darkTheme" />
     </div>
   </div>
 </template>
@@ -154,106 +177,110 @@
 import Filters from "./filters.vue";
 import products from "./products.vue";
 import json from "./../assets/store-demo-data.json";
+import { ref, computed } from "vue";
 
 export default {
-  components: {
-    Filters,
-    products,
-  },
-  props: ["darkTheme", "screen" ,"showFilters"],
-  data() {
-    return {
-      data: [],num: [],showList:false,feature:"Featured",
-      copy:[],products:[]
-    };
-  },
-  mounted() {
-    this.products = json.products.slice();
-    this.copy = json.products.slice();
-    // fetch("http://localhost:3000/products")
-    //   .then((res) => res.json())
-    //   .then((data) => (this.data = data))
-    //   .then(()=> (this.products = this.data.slice()))
-    //   .then(()=> (this.copy = this.data.slice()))
-    //   .catch((err) => console.log(err.message));
-  },
-  computed: {
-    rating() {
+  setup() {
+    const products = ref([]);
+    const num = ref([]);
+    const copy = ref([]);
+    const showList = ref(false);
+    const feature = ref("Featured");
+
+    products.value = json.products.slice();
+    copy.value = json.products.slice();
+
+    const rating = computed(() => {
       for (var i = 3; i >= 0; i--) {
-        this.num[i] = this.products.filter(
+        num.value[i] = products.value.filter(
           (product) => product.rating == i + 1
         ).length;
       }
-      this.num[3] += this.products.filter(
+      num.value[3] += products.value.filter(
         (product) => product.rating == 5
       ).length;
       for (var i = 2; i >= 0; i--) {
-        this.num[i] += this.num[i + 1];
+        num.value[i] += num.value[i + 1];
       }
-      return this.num.reverse();
-    },
-  },
-  methods: {
-    search(e) {
-      this.products = json.products.slice().filter((product) => product.name.toLowerCase().includes(e));
-      this.copy = [...this.products];
-      this.feature = "Featured";
-    },
-    range(min, max) {
-      this.products = json.products.slice().filter((product) => product.price >= min && product.price <= max);
-      this.copy = [...this.products];
-      this.feature = "Featured";
-    },
-    changeBrand(brand) {
-      this.products = json.products.slice().filter((product) => brand == "all" || product.brand == brand);
-      this.copy = [...this.products];
-      this.feature = "Featured";
-    },
-    toggleList($e){
-      this.showList = !this.showList;
-      this.feature = $e.target.id;
-      this.sort(this.feature);
-    },
-    sort(kind){
+      return num.value.reverse();
+    });
+    
+    function search(e) {
+      products.value = json.products
+        .slice()
+        .filter((product) =>
+          product.name.toLowerCase().includes(e.toLowerCase())
+        );
+      copy.value = [...products.value];
+      feature.value = "Featured";
+    }
+    function range(min, max) {
+      products.value = json.products
+        .slice()
+        .filter((product) => product.price >= min && product.price <= max);
+      copy.value = [...products.value];
+      feature.value = "Featured";
+    }
+    function changeBrand(brand) {
+      products.value = json.products
+        .slice()
+        .filter((product) => brand == "all" || product.brand == brand);
+      copy.value = [...products.value];
+      feature.value = "Featured";
+    }
+    function toggleList($e) {
+      showList.value = !showList.value;
+      feature.value = $e.target.id;
+      sort(feature.value);
+    }
+    function sort(kind) {
       switch (kind) {
         case "Featured":
-          this.products = [...this.copy];
-        break;
+          products.value = [...copy.value];
+              break;
         case "Lowest":
-          this.products.sort((a,b) => (a.price > b.price) ? 1 : ((b.price > a.price) ? -1 : 0));
+          products.value.sort((a, b) =>
+            a.price > b.price ? 1 : b.price > a.price ? -1 : 0
+          );
           break;
         case "Highest":
-          this.products.sort((a,b) => (a.price < b.price) ? 1 : ((b.price < a.price) ? -1 : 0));
+          products.value.sort((a, b) =>
+            a.price < b.price ? 1 : b.price < a.price ? -1 : 0
+          );
           break;
       }
     }
+    return { products, num, copy, showList, feature, rating, search,range,changeBrand,toggleList};
   },
+  components: {Filters,products,},
+  props: ["darkTheme", "screen", "showFilters"]
 };
 </script>
 
 <style lang="scss" scoped>
-*{
-  transition: all .3s;
+* {
+  transition: all 0.3s;
 }
-.darkCommerce{
-    background: #161d31!important;
-    .dark-h2{
-      color:#d0d2d6;
+.darkCommerce {
+  background: #161d31 !important;
+  .dark-h2 {
+    color: #d0d2d6;
+  }
+  .dark-h5 {
+    color: #b4b7bd;
+  }
+  .dark-p {
+    color: #d0d2d6 !important;
+  }
+  .purple {
+    color: #7367f0 !important;
+  }
+  .view {
+    .left,
+    .right {
+      background: transparent !important;
     }
-    .dark-h5{
-      color:#b4b7bd;
-    }
-    .dark-p{
-      color: #d0d2d6 !important;;
-    }
-    .purple{
-      color:#7367f0 !important;
-    }
-    .view{
-      .left,.right{
-        background: transparent!important;;
-      }
-    }
+  }
 }
 .container {
   width: 80%;
@@ -333,30 +360,30 @@ header {
   }
   .out {
     width: 70%;
-    position:relative;
-    .feature-list{
+    position: relative;
+    .feature-list {
       position: absolute;
-      top:45px;
-      right:102px;
+      top: 45px;
+      right: 102px;
       z-index: 5;
       width: 140px;
       height: 130px;
       background: #fff;
       display: flex;
       flex-wrap: wrap;
-      padding-bottom:0;
+      padding-bottom: 0;
       box-sizing: border-box;
       box-shadow: 0 5px 25px rgb(34 41 47 / 10%);
       border-radius: 0.358rem;
-      .item{
+      .item {
         width: 100%;
         color: #6e6b7bce;
         padding: 10px 20px;
-        padding-top:15px;
+        padding-top: 15px;
         font-size: 14px;
-        cursor:pointer;
-        &:hover{
-          background-color: rgba(115,103,240,.12);
+        cursor: pointer;
+        &:hover {
+          background-color: rgba(115, 103, 240, 0.12);
           color: #7367f0;
         }
       }
@@ -390,7 +417,6 @@ header {
       width: 20px;
       transform: rotate(90deg);
     }
-    
   }
   .view {
     width: 80px;
